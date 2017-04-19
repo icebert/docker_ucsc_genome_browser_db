@@ -1,10 +1,10 @@
-FROM ubuntu:14.04.3
+FROM ubuntu:16.04
 MAINTAINER Meng Wang <wangm0855@gmail.com>
 LABEL Description="UCSC Genome Browser database"
 
 RUN apt-get update && apt-get install -y wget rsync \
     mysql-server \
-    mysql-client-5.5 mysql-client-core-5.5 \
+    mysql-client-5.7 mysql-client-core-5.7 \
     libmysqlclient-dev && \
     apt-get clean
 
