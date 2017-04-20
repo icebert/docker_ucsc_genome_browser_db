@@ -60,4 +60,4 @@ RUN rsync -avzP  rsync://hgdownload.cse.ucsc.edu/mysql/hg38/chromInfo.MYD /data/
 
 EXPOSE 3306
 
-CMD ["mysqld_safe"]
+CMD ["mysqld"]
