@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y wget rsync \
     libmysqlclient-dev && \
     apt-get clean
 
-RUN mkdir /data
+RUN mkdir /data && mkdir /var/run/mysqld
 
 RUN { \
         echo '[mysqld]'; \
@@ -22,11 +22,11 @@ RUN { \
         echo 'bind-address = 0.0.0.0'; \
     } > /etc/mysql/my.cnf
 
-RUN mysql_install_db && chown -R mysql:mysql /data
+RUN mysqld --initialize-insecure && chown -R mysql:mysql /data
 
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
-RUN mysqld_safe & \
+RUN mysqld -u root & \
     sleep 3s &&\
     echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin'; FLUSH PRIVILEGES" | mysql && \
     echo "create database hgcentral" | mysql && \
