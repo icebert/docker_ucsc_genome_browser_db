@@ -27,7 +27,7 @@ RUN mysqld --initialize-insecure && chown -R mysql:mysql /data
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
 RUN mysqld -u root & \
-    sleep 3s &&\
+    sleep 6s &&\
     echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin'; FLUSH PRIVILEGES" | mysql && \
     echo "create database hgcentral" | mysql && \
     echo "create database hgFixed" | mysql && \
@@ -60,4 +60,4 @@ RUN rsync -avzP  rsync://hgdownload.cse.ucsc.edu/mysql/hg38/chromInfo.MYD /data/
 
 EXPOSE 3306
 
-CMD ["mysqld"]
+CMD ["mysqld", "-u", "root"]
