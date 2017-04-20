@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER Meng Wang <wangm0855@gmail.com>
 LABEL Description="UCSC Genome Browser database"
 
-RUN debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password '
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y wget rsync \
     mysql-server \
