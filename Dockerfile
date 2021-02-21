@@ -22,11 +22,12 @@ RUN { \
         echo 'bind-address = 0.0.0.0'; \
     } > /etc/mysql/my.cnf
 
-RUN mysqld --initialize-insecure && chown -R mysql:mysql /data /var/run/mysqld /var/lib/mysql
+RUN mysqld --initialize-insecure && chown -R mysql:mysql /data
 
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
-RUN mysqld -u root & \
+RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
+    mysqld -u root & \
     sleep 6s &&\
     echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin'; FLUSH PRIVILEGES" | mysql && \
     echo "create database hgcentral" | mysql && \
