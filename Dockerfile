@@ -22,7 +22,7 @@ RUN { \
         echo 'bind-address = 0.0.0.0'; \
     } > /etc/mysql/my.cnf
 
-RUN mysqld --initialize-insecure && chown -R mysql:mysql /data
+RUN mysqld --initialize-insecure && chown -R mysql:mysql /data /var/run/mysqld
 
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
