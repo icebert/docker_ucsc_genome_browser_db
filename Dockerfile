@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 MAINTAINER Meng Wang <wangm0855@gmail.com>
 LABEL Description="UCSC Genome Browser database"
 
@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y wget rsync \
     mysql-server \
-    mysql-client-5.7 mysql-client-core-5.7 \
+    mysql-client-8.0 mysql-client-core-8.0 \
     libmysqlclient-dev && \
     apt-get clean
 
@@ -22,13 +22,13 @@ RUN { \
         echo 'bind-address = 0.0.0.0'; \
     } > /etc/mysql/my.cnf
 
-RUN mysqld --initialize-insecure && chown -R mysql:mysql /data
+RUN mysqld --initialize-insecure && chown -R mysql:mysql /data /var/run/mysqld
 
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
 RUN mysqld -u root & \
     sleep 6s &&\
-    echo "GRANT ALL ON *.* TO admin@'%' IDENTIFIED BY 'admin'; FLUSH PRIVILEGES" | mysql && \
+    echo "CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'; GRANT ALL ON *.* TO 'admin'@'%'; FLUSH PRIVILEGES" | mysql && \
     echo "create database hgcentral" | mysql && \
     echo "create database hgFixed" | mysql && \
     echo "create database hg38" | mysql && \
