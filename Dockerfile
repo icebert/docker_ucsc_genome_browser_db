@@ -26,8 +26,8 @@ RUN mysqld --initialize-insecure && chown -R mysql:mysql /data /var/run/mysqld
 
 RUN wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 
-RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-    service mysql start && \
+RUN mysqld -u root & \
+    sleep 6s &&\
     echo "CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'; GRANT ALL ON *.* TO 'admin'@'%'; FLUSH PRIVILEGES" | mysql && \
     echo "create database hgcentral" | mysql && \
     echo "create database hgFixed" | mysql && \
@@ -61,3 +61,4 @@ RUN rsync -avzP  rsync://hgdownload.cse.ucsc.edu/mysql/hg38/chromInfo.MYD /data/
 EXPOSE 3306
 
 CMD ["mysqld", "-u", "root"]
+
